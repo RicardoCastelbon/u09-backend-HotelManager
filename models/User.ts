@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model, ObjectId } from "mongoose";
 import bcrypt from "bcrypt";
 
 interface User {
@@ -6,11 +6,17 @@ interface User {
   email: string;
   password: string;
   role: string;
-  comparePassword: (arg0: any) => any;
+  hotel: ObjectId;
+  comparePassword: (arg0: string) => Boolean;
 }
 
 const UserSchema = new Schema<User>(
   {
+    hotel: {
+      type: mongoose.Types.ObjectId,
+      ref: "Hotel",
+    },
+
     name: {
       type: String,
       required: [true, "Please provide name"],

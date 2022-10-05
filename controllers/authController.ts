@@ -30,20 +30,22 @@ const login = async (req: any, res: any) => {
   const user = await User.findOne({ email });
   if (!user) {
     res.status(StatusCodes.BAD_REQUEST).json({ message: "Email not found" });
+  }else{
+    //checks if the password is correct
+    const isPassCorrect = await user.comparePassword(password);
+    if (!isPassCorrect) {
+      res.status(StatusCodes.BAD_REQUEST).json({ message: "Wrong password" });
+    }
+
+    //token creation
+    const tokenUser = createTokenUser(user);
+
+    attachCookiesToResponse({ res, user: tokenUser });
+
+    res.status(StatusCodes.OK).json({ user: tokenUser });
   }
 
-  //checks if the password is correct
-  const isPassCorrect = await user?.comparePassword(password);
-  if (!isPassCorrect) {
-    res.status(StatusCodes.BAD_REQUEST).json({ message: "Wrong password" });
-  }
-
-  //token creation
-  const tokenUser = createTokenUser(user);
-
-  attachCookiesToResponse({ res, user: tokenUser });
-
-  res.status(StatusCodes.OK).json({ user: tokenUser });
+  
 };
 
 const logout = async (req: any, res: any) => {
