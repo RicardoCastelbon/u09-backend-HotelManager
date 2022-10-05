@@ -6,6 +6,7 @@ interface User {
   email: string;
   password: string;
   role: string;
+  comparePassword: (arg0: any) => any;
 }
 
 const UserSchema = new Schema<User>(

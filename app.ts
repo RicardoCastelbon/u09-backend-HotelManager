@@ -5,6 +5,8 @@ const app = express();
 //Other Packages
 const cookieParser = require("cookie-parser");
 require("dotenv").config(); // To load environment variables from .env
+import morgan from "morgan";
+import cors from "cors";
 
 //Database
 const connectToDB = require("./db/connect");
@@ -13,6 +15,8 @@ const connectToDB = require("./db/connect");
 const authRouter = require("./routes/authRoutes");
 
 //Middleware
+app.use(cors());
+app.use(morgan("tiny")); //Log request fro easy debugging
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 
