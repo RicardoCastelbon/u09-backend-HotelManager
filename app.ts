@@ -4,23 +4,25 @@ const app = express();
 
 //Other Packages
 import cookieParser from "cookie-parser";
-require("dotenv").config(); // To load environment variables from .env
+import dotenv from "dotenv"; // To load environment variables from .env
+dotenv.config();
 import morgan from "morgan";
 import cors from "cors";
 
 //Database
-const connectToDB = require("./db/connect");
+import connectDB from "./db/connect";
 
 //Routers
-const authRouter = require("./routes/authRoutes");
+import authRouter from "./routes/authRoutes"
 
 //Middleware
 app.use(cors());
 app.use(morgan("tiny")); //Log request fro easy debugging
-app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 import notFoundMiddleware from "./middleware/not-found";
 import errorHandlerMiddleware from "./middleware/error-handler";
+
+app.use(express.json());
 
 app.get("/", (req: any, res: any) => {
   res.send("HotelManager");
@@ -34,7 +36,7 @@ app.use(errorHandlerMiddleware);
 const port = process.env.PORT || 5000;
 const start = async () => {
   try {
-    await connectToDB(process.env.MONGO_URI);
+    await connectDB(`${process.env.MONGO_URI}`);
     app.listen(port, () =>
       console.log(`Server is listening on port ${port}...`)
     );
