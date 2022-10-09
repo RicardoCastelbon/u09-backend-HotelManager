@@ -1,5 +1,7 @@
 import mongoose, { Schema, model, ObjectId } from "mongoose";
 import bcrypt from "bcrypt";
+import validator from "validator";
+import isEmail from "validator/lib/isEmail";
 
 interface User {
   name: string;
@@ -8,6 +10,9 @@ interface User {
   role: string;
   hotel: ObjectId;
   comparePassword: (arg0: string) => Boolean;
+  lastName: string;
+  phone: string;
+  salary: string;
 }
 
 const UserSchema = new Schema<User>(
@@ -16,22 +21,37 @@ const UserSchema = new Schema<User>(
       type: mongoose.Types.ObjectId,
       ref: "Hotel",
     },
-
     name: {
       type: String,
       required: [true, "Please provide name"],
       minlength: 3,
-      maxlength: 50,
+      maxlength: 20,
+      trim: true,
     },
     email: {
       type: String,
       unique: true,
       required: [true, "Please provide email"],
+      validate: {
+        validator: validator.isEmail,
+        message: "Please provide a valid email",
+      },
     },
     password: {
       type: String,
       required: [true, "Please provide password"],
       minlength: 6,
+    },
+    lastName: {
+      type: String,
+      trim: true,
+      maxlength: 20,
+    },
+    phone: {
+      type: String,
+    },
+    salary: {
+      type: String,
     },
     role: {
       type: String,

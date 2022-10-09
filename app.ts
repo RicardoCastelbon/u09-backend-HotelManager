@@ -6,6 +6,7 @@ const app = express();
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv"; // To load environment variables from .env
 dotenv.config();
+import 'express-async-errors'
 import morgan from "morgan";
 import cors from "cors";
 

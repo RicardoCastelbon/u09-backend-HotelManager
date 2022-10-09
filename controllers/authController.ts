@@ -2,14 +2,17 @@ import User from "../models/User";
 import { StatusCodes } from "http-status-codes";
 import createTokenUser from "../utils/createTokenUser";
 import attachCookiesToResponse from "../utils/jwt";
-import { ObjectId } from "mongoose";
+import { BadRequestError } from "../errors";
 
 const register = async (req: any, res: any) => {
   const { name, email, password } = req.body;
 
-  const emailExists = await User.findOne({ email });
-  if (emailExists) {
-    throw new Error("Email already exists");
+  if (!name || !email || !password) {
+    throw new BadRequestError("Please provide all values");
+  }
+  const userExists = await User.findOne({ email });
+  if (userExists) {
+    throw new BadRequestError("Email already in use");
   }
 
   //user creation
@@ -30,7 +33,7 @@ const login = async (req: any, res: any) => {
   const user = await User.findOne({ email });
   if (!user) {
     res.status(StatusCodes.BAD_REQUEST).json({ message: "Email not found" });
-  }else{
+  } else {
     //checks if the password is correct
     const isPassCorrect = await user.comparePassword(password);
     if (!isPassCorrect) {
@@ -44,8 +47,6 @@ const login = async (req: any, res: any) => {
 
     res.status(StatusCodes.OK).json({ user: tokenUser });
   }
-
-  
 };
 
 const logout = async (req: any, res: any) => {
