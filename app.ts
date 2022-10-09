@@ -13,7 +13,10 @@ import cors from "cors";
 import connectDB from "./db/connect";
 
 //Routers
-import authRouter from "./routes/authRoutes"
+import authRouter from "./routes/authRoutes";
+import hotelRoutes from "./routes/hotelRoutes";
+import bookingRoutes from "./routes/bookingRoutes";
+import employeeRoutes from "./routes/employeeRoutes";
 
 //Middleware
 app.use(cors());
@@ -29,6 +32,9 @@ app.get("/", (req: any, res: any) => {
 });
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/hotel", hotelRoutes);
+app.use("/api/v1/bookings", bookingRoutes);
+app.use("/api/v1/employees", employeeRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
