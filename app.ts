@@ -6,7 +6,7 @@ const app = express();
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv"; // To load environment variables from .env
 dotenv.config();
-import 'express-async-errors'
+import "express-async-errors";
 import morgan from "morgan";
 import cors from "cors";
 
@@ -20,7 +20,13 @@ import bookingRoutes from "./routes/bookingRoutes";
 import employeeRoutes from "./routes/employeeRoutes";
 
 //Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    credentials: true,
+    exposedHeaders: ["Authorization"],
+  })
+);
 app.use(morgan("tiny")); //Log request fro easy debugging
 app.use(cookieParser(process.env.JWT_SECRET));
 import notFoundMiddleware from "./middleware/not-found";

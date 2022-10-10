@@ -1,7 +1,7 @@
 import mongoose, { Schema, model, ObjectId } from "mongoose";
 import bcrypt from "bcrypt";
 import validator from "validator";
-import isEmail from "validator/lib/isEmail";
+
 
 interface User {
   name: string;
