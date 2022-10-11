@@ -2,7 +2,7 @@ import User from "../models/User";
 import { StatusCodes } from "http-status-codes";
 import createTokenUser from "../utils/createTokenUser";
 import attachCookiesToResponse from "../utils/jwt";
-import { BadRequestError } from "../errors";
+import { BadRequestError, UnAuthenticatedError } from "../errors";
 
 const register = async (req: any, res: any) => {
   const { name, email, password } = req.body;
@@ -15,11 +15,15 @@ const register = async (req: any, res: any) => {
     throw new BadRequestError("Email already in use");
   }
 
+  //Checks if is the first account and makes it admin in that case
+  const isFirstAccount = (await User.countDocuments({})) === 0;
+  const role = isFirstAccount ? "admin" : "employee";
+
   //user creation
-  const user = await User.create({ name, email, password });
+  const user = await User.create({ name, email, password, role });
   //token creation
   const tokenUser = createTokenUser(user);
-  console.log(user);
+
 
   attachCookiesToResponse({ res, user: tokenUser });
 
@@ -29,15 +33,19 @@ const register = async (req: any, res: any) => {
 const login = async (req: any, res: any) => {
   const { email, password } = req.body;
 
+  if (!email || !password) {
+    throw new BadRequestError("Please provide all values");
+  }
+
   //checks if user is registered
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select('+password');
   if (!user) {
-    res.status(StatusCodes.BAD_REQUEST).json({ message: "Email not found" });
+    throw new UnAuthenticatedError("Invalid Credentials");
   } else {
     //checks if the password is correct
     const isPassCorrect = await user.comparePassword(password);
     if (!isPassCorrect) {
-      res.status(StatusCodes.BAD_REQUEST).json({ message: "Wrong password" });
+      throw new UnAuthenticatedError("Invalid Credentials");
     }
 
     //token creation

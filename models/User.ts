@@ -2,7 +2,6 @@ import mongoose, { Schema, model, ObjectId } from "mongoose";
 import bcrypt from "bcrypt";
 import validator from "validator";
 
-
 interface User {
   name: string;
   email: string;
@@ -41,6 +40,7 @@ const UserSchema = new Schema<User>(
       type: String,
       required: [true, "Please provide password"],
       minlength: 6,
+      select: false,
     },
     lastName: {
       type: String,
