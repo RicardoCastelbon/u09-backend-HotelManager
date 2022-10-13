@@ -9,7 +9,10 @@ const authenticateUser = async (req: any, res: any, next: any) => {
   try {
     const { name, userId, role }: any = isTokenValid({ token });
     req.user = { name, userId, role };
-    console.log(req.user);
+    /* ALTERNATIVE SYNTAX 
+    const payload: any = isTokenValid({ token });
+    req.user = { name: payload.name, userId: payload.userId, role:payload.role};
+    */
     next();
   } catch (error) {
     throw new UnAuthenticatedError("Authentication Invalid");

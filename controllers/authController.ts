@@ -64,4 +64,46 @@ const logout = async (req: any, res: any) => {
   res.status(StatusCodes.OK).json({ msg: "User logged out" });
 };
 
-export { register, login, logout };
+const updateUser = async (req: any, res: any) => {
+  const { email, name, lastName } = req.body;
+  if (!name || !email || !lastName) {
+    throw new BadRequestError("Please provide all values");
+  }
+
+  const user = await User.findOne({ _id: req.user.userId });
+
+  if (user) {
+    user.email = email;
+    user.name = name;
+    user.lastName = lastName;
+
+    await user.save();
+
+    //token creation
+    const tokenUser = createTokenUser(user);
+
+    attachCookiesToResponse({ res, user: tokenUser });
+
+    res.status(StatusCodes.CREATED).json({ user: tokenUser });
+  }
+};
+
+const updateUserPassword = async (req: any, res: any) => {
+  const { oldPassword, newPassword } = req.body;
+  if (!oldPassword || !newPassword) {
+    throw new BadRequestError("Please provide both values");
+  }
+  const user = await User.findOne({ _id: req.user.userId });
+  if (user) {
+    const isPasswordCorrect = await user.comparePassword(oldPassword);
+    if (!isPasswordCorrect) {
+      throw new UnAuthenticatedError("Invalid Credentials");
+    }
+    user.password = newPassword;
+
+    await user.save();
+    res.status(StatusCodes.OK).json({ msg: "Success! Password Updated." });
+  }
+};
+
+export { register, login, logout, updateUser };
