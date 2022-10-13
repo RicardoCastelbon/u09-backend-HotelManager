@@ -1,7 +1,7 @@
 import User from "../models/User";
 import { StatusCodes } from "http-status-codes";
 import createTokenUser from "../utils/createTokenUser";
-import attachCookiesToResponse from "../utils/jwt";
+import { attachCookiesToResponse } from "../utils/jwt";
 import { BadRequestError, UnAuthenticatedError } from "../errors";
 
 const register = async (req: any, res: any) => {
@@ -24,7 +24,6 @@ const register = async (req: any, res: any) => {
   //token creation
   const tokenUser = createTokenUser(user);
 
-
   attachCookiesToResponse({ res, user: tokenUser });
 
   res.status(StatusCodes.CREATED).json({ user: tokenUser });
@@ -38,7 +37,7 @@ const login = async (req: any, res: any) => {
   }
 
   //checks if user is registered
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email }).select("+password");
   if (!user) {
     throw new UnAuthenticatedError("Invalid Credentials");
   } else {

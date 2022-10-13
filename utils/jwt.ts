@@ -7,15 +7,16 @@ const createJWT = ({ payload }: any) => {
   return token;
 };
 
-const isTokenValid = ({ token }: any) =>
-  jwt.verify(token, `${process.env.JWT_SECRET}`);
+const isTokenValid = ({ token }: any) => {
+  return jwt.verify(token, `${process.env.JWT_SECRET}`);
+};
 
 const attachCookiesToResponse = ({ res, user }: any) => {
   const token = createJWT({ payload: user });
 
   //send token via cookie
   const oneDay = 1000 * 60 * 60 * 24;
-  res.cookie("refreshToken", token, {
+  res.cookie("token", token, {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
     //if the project is in production can send cookies in https only
@@ -24,5 +25,4 @@ const attachCookiesToResponse = ({ res, user }: any) => {
   });
 };
 
-export default attachCookiesToResponse;
-isTokenValid;
+export { attachCookiesToResponse, isTokenValid };

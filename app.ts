@@ -31,6 +31,7 @@ app.use(morgan("tiny")); //Log request for easy debugging
 app.use(cookieParser(process.env.JWT_SECRET));
 import notFoundMiddleware from "./middleware/not-found";
 import errorHandlerMiddleware from "./middleware/error-handler";
+import { authenticateUser } from "./middleware/authentication";
 
 app.use(express.json());
 
@@ -40,7 +41,7 @@ app.get("/", (req: any, res: any) => {
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/hotel", hotelRoutes);
-app.use("/api/v1/bookings", bookingRoutes);
+app.use("/api/v1/bookings", authenticateUser, bookingRoutes);
 app.use("/api/v1/employees", employeeRoutes);
 
 app.use(notFoundMiddleware);
