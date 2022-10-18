@@ -2,9 +2,9 @@ import mongoose, { Schema, model, ObjectId } from "mongoose";
 
 interface Booking {
   hotel: ObjectId;
-  typeOfRoom: string;
-  checkin: Date;
-  checkout: Date;
+  roomType: string;
+  checkin: String;
+  checkout: String;
   price: number;
   firstName: string;
   lastName: string;
@@ -19,29 +19,36 @@ const BookingSchema = new Schema<Booking>(
       type: mongoose.Types.ObjectId,
       ref: "Hotel",
     },
-    typeOfRoom: {
+    roomType: {
       type: String,
+      enum: ["single", "double", "triple"],
+      default: "single",
     },
     checkin: {
-      type: Date,
+      type: String,
     },
     checkout: {
-      type: Date,
+      type: String,
     },
     price: {
       type: Number,
+      required: [true, "Please provide the toom price"],
     },
     firstName: {
       type: String,
+      required: [true, "Please provide first name"],
     },
     lastName: {
       type: String,
+      required: [true, "Please provide last name"],
     },
     email: {
       type: String,
+      required: [true, "Please provide email"],
     },
     phone: {
       type: String,
+      required: [true, "Please provide phone number"],
     },
     status: {
       type: String,

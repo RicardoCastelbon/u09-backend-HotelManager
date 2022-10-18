@@ -1,5 +1,36 @@
+import { StatusCodes } from "http-status-codes";
+import { BadRequestError, NotFoundError } from "../errors";
+import Booking from "../models/Booking";
+
 const createBooking = async (req: any, res: any) => {
-  res.send("Create Booking");
+  const {
+    roomType,
+    checkin,
+    checkout,
+    price,
+    firstName,
+    lastName,
+    email,
+    phone,
+    status,
+  } = req.body;
+
+  if (
+    !roomType ||
+    !checkin ||
+    !checkout ||
+    !price ||
+    !firstName ||
+    !lastName ||
+    !email ||
+    !phone ||
+    !status
+  ) {
+    throw new BadRequestError("Please provide all values");
+  }
+
+  const booking = await Booking.create(req.body);
+  res.status(StatusCodes.CREATED).json({ booking });
 };
 
 const getAllBookings = async (req: any, res: any) => {
@@ -18,4 +49,10 @@ const deleteBooking = async (req: any, res: any) => {
   res.send("Delete one Booking");
 };
 
-export { createBooking, getAllBookings, getOneBooking, updateBooking, deleteBooking };
+export {
+  createBooking,
+  getAllBookings,
+  getOneBooking,
+  updateBooking,
+  deleteBooking,
+};
