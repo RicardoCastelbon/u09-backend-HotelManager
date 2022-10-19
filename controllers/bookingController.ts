@@ -37,7 +37,10 @@ const createBooking = async (req: any, res: any) => {
 };
 
 const getAllBookings = async (req: any, res: any) => {
-  res.send("Get all Bookings");
+  const bookings = await Booking.find({ user: req.user.userId });
+  res
+    .status(StatusCodes.OK)
+    .json({ bookings, totalBookings: bookings.length, numOfPages: 1 });
 };
 
 const getOneBooking = async (req: any, res: any) => {
