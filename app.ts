@@ -40,7 +40,7 @@ app.get("/", (req: any, res: any) => {
 });
 
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/hotel", hotelRoutes);
+app.use("/api/v1/hotel", authenticateUser, hotelRoutes);
 app.use("/api/v1/bookings", authenticateUser, bookingRoutes);
 app.use("/api/v1/employees", employeeRoutes);
 

@@ -1,5 +1,6 @@
 import mongoose, { Schema, model, ObjectId } from "mongoose";
 
+
 interface Hotel {
   name: string;
   address: string;

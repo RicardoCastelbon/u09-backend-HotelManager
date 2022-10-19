@@ -16,11 +16,16 @@ const register = async (req: any, res: any) => {
   }
 
   //Checks if is the first account and makes it admin in that case
-  const isFirstAccount = (await User.countDocuments({})) === 0;
-  const role = isFirstAccount ? "admin" : "employee";
+  /* const isFirstAccount = (await User.countDocuments({})) === 0;
+  const role = isFirstAccount ? "admin" : "employee"; */
 
   //user creation
-  const user = await User.create({ name, email, password, role });
+  const user = await User.create({
+    name,
+    email,
+    password,
+    role: "admin",
+  });
   //token creation
   const tokenUser = createTokenUser(user);
 

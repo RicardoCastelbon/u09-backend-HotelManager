@@ -29,6 +29,9 @@ const createBooking = async (req: any, res: any) => {
     throw new BadRequestError("Please provide all values");
   }
 
+  //model property = user that is logged in
+  req.body.user = req.user.userId;
+
   const booking = await Booking.create(req.body);
   res.status(StatusCodes.CREATED).json({ booking });
 };

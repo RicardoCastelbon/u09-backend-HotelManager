@@ -1,7 +1,7 @@
 import mongoose, { Schema, model, ObjectId } from "mongoose";
 
 interface Booking {
-  hotel: ObjectId;
+  user: ObjectId;
   roomType: string;
   checkin: String;
   checkout: String;
@@ -15,9 +15,10 @@ interface Booking {
 
 const BookingSchema = new Schema<Booking>(
   {
-    hotel: {
+    user: {
       type: mongoose.Types.ObjectId,
-      ref: "Hotel",
+      ref: "User",
+      required: [true, "Please provide user"],
     },
     roomType: {
       type: String,

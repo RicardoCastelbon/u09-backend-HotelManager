@@ -3,11 +3,11 @@ import bcrypt from "bcrypt";
 import validator from "validator";
 
 interface User {
+  hotel: any;
   name: string;
   email: string;
   password: string;
   role: string;
-  hotel: ObjectId;
   comparePassword: (arg0: string) => Boolean;
   lastName: string;
   phone: string;
