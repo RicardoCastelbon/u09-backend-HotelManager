@@ -4,7 +4,6 @@ const router = express.Router();
 import {
   createBooking,
   getAllBookings,
-  getOneBooking,
   updateBooking,
   deleteBooking,
 } from "../controllers/bookingController";
@@ -12,7 +11,6 @@ import {
 router.route("/").post(createBooking).get(getAllBookings);
 router
   .route("/:id")
-  .get(getOneBooking)
   .delete(deleteBooking)
   .patch(updateBooking);
 

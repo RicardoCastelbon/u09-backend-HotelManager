@@ -43,22 +43,50 @@ const getAllBookings = async (req: any, res: any) => {
     .json({ bookings, totalBookings: bookings.length, numOfPages: 1 });
 };
 
-const getOneBooking = async (req: any, res: any) => {
-  res.send("Get one Booking");
-};
-
 const updateBooking = async (req: any, res: any) => {
-  res.send("Update Booking");
+  const { id: bookingId } = req.params;
+  const {
+    roomType,
+    checkin,
+    checkout,
+    price,
+    firstName,
+    lastName,
+    email,
+    phone,
+    status,
+  } = req.body;
+
+  if (
+    !roomType ||
+    !checkin ||
+    !checkout ||
+    !price ||
+    !firstName ||
+    !lastName ||
+    !email ||
+    !phone ||
+    !status
+  ) {
+    throw new BadRequestError("Please provide all values");
+  }
+
+  const booking = await Booking.findOne({ _id: bookingId });
+
+  if (!booking) {
+    throw new NotFoundError(`No booking with id ${bookingId}`);
+  }
+
+  const updatedBooking = await Booking.findOneAndUpdate(
+    { _id: bookingId },
+    req.body,
+    { new: true, runValidators: true }
+  );
+  res.status(StatusCodes.OK).json({ updatedBooking });
 };
 
 const deleteBooking = async (req: any, res: any) => {
   res.send("Delete one Booking");
 };
 
-export {
-  createBooking,
-  getAllBookings,
-  getOneBooking,
-  updateBooking,
-  deleteBooking,
-};
+export { createBooking, getAllBookings, updateBooking, deleteBooking };
