@@ -1,6 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors";
 import Booking from "../models/Booking";
+import checkPermissions from "../utils/checkPermissions";
 
 const createBooking = async (req: any, res: any) => {
   const {
@@ -76,6 +77,11 @@ const updateBooking = async (req: any, res: any) => {
   if (!booking) {
     throw new NotFoundError(`No booking with id ${bookingId}`);
   }
+
+  console.log(typeof req.user.userId);
+  console.log(typeof booking.user);
+
+  checkPermissions(req.user, booking.user);
 
   const updatedBooking = await Booking.findOneAndUpdate(
     { _id: bookingId },
