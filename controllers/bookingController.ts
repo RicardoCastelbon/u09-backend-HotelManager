@@ -38,7 +38,44 @@ const createBooking = async (req: any, res: any) => {
 };
 
 const getAllBookings = async (req: any, res: any) => {
-  const bookings = await Booking.find({ user: req.user.userId });
+  const { search, status, sort } = req.query;
+
+  interface QueryObject {
+    user: string;
+    status?: string;
+    lastName?: any;
+  }
+
+  const queryObject: QueryObject = {
+    user: req.user.userId,
+  };
+
+  if (status !== "all") {
+    queryObject.status = status;
+  }
+
+  if (search) {
+    queryObject.lastName = { $regex: search, $options: "i" };
+  }
+
+  let result = Booking.find(queryObject);
+
+  //short conditions
+  if (sort === "latest") {
+    result = result.sort("-createdAt");
+  }
+  if (sort === "oldest") {
+    result = result.sort("createdAt");
+  }
+  if (sort === "a-z") {
+    result = result.sort("lastName");
+  }
+  if (sort === "z-a") {
+    result = result.sort("-lastName");
+  }
+
+  const bookings = await result;
+
   res
     .status(StatusCodes.OK)
     .json({ bookings, totalBookings: bookings.length, numOfPages: 1 });
@@ -78,9 +115,6 @@ const updateBooking = async (req: any, res: any) => {
     throw new NotFoundError(`No booking with id ${bookingId}`);
   }
 
-  console.log(typeof req.user.userId);
-  console.log(typeof booking.user);
-
   checkPermissions(req.user, booking.user);
 
   const updatedBooking = await Booking.findOneAndUpdate(
@@ -92,7 +126,18 @@ const updateBooking = async (req: any, res: any) => {
 };
 
 const deleteBooking = async (req: any, res: any) => {
-  res.send("Delete one Booking");
+  const { id: bookingId } = req.params;
+
+  const booking = await Booking.findOne({ _id: bookingId });
+
+  if (!booking) {
+    throw new NotFoundError(`No booking with id ${bookingId}`);
+  }
+
+  checkPermissions(req.user, booking.user);
+
+  await booking.remove();
+  res.status(StatusCodes.OK).json({ msg: "Success! Booking removed" });
 };
 
 export { createBooking, getAllBookings, updateBooking, deleteBooking };
