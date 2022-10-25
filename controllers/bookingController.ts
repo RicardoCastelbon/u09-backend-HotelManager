@@ -43,14 +43,14 @@ const getAllBookings = async (req: any, res: any) => {
   interface QueryObject {
     user: string;
     status?: string;
-    lastName?: any;
+    lastName?: object;
   }
 
   const queryObject: QueryObject = {
     user: req.user.userId,
   };
 
-  if (status !== "all") {
+  if (status && status !== "all") {
     queryObject.status = status;
   }
 
