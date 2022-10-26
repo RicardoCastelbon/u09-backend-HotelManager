@@ -7,8 +7,8 @@ const authenticateUser = async (req: any, res: any, next: any) => {
     throw new UnAuthenticatedError("Authentication Invalid");
   }
   try {
-    const { name, userId, role }: any = isTokenValid({ token });
-    req.user = { name, userId, role };
+    const { name, userId, role, adminId }: any = isTokenValid({ token });
+    req.user = { name, userId, role, adminId };
     /* ALTERNATIVE SYNTAX 
     const payload: any = isTokenValid({ token });
     req.user = { name: payload.name, userId: payload.userId, role:payload.role};

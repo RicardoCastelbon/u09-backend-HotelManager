@@ -30,8 +30,14 @@ const createBooking = async (req: any, res: any) => {
     throw new BadRequestError("Please provide all values");
   }
 
-  //model property = user that is logged in
-  req.body.user = req.user.userId;
+  console.log(req.user);
+
+  if (req.user.adminId) {
+    req.body.user = req.user.adminId;
+  } else {
+    //model property = user that is logged in
+    req.body.user = req.user.userId;
+  }
 
   const booking = await Booking.create(req.body);
   res.status(StatusCodes.CREATED).json({ booking });
@@ -46,9 +52,17 @@ const getAllBookings = async (req: any, res: any) => {
     lastName?: object;
   }
 
-  const queryObject: QueryObject = {
-    user: req.user.userId,
-  };
+  let queryObject: QueryObject;
+
+  if (req.user.adminId) {
+    queryObject = {
+      user: req.user.adminId,
+    };
+  } else {
+    queryObject = {
+      user: req.user.userId,
+    };
+  }
 
   if (status && status !== "all") {
     queryObject.status = status;

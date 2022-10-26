@@ -8,7 +8,15 @@ import {
   deleteEmployee,
 } from "../controllers/employeeController";
 
-router.route("/").post(createEmployee).get(getAllEmployees);
-router.route("/:id").delete(deleteEmployee).patch(updateEmployee);
+import { authenticateUser } from "../middleware/authentication";
+
+router
+  .route("/")
+  .post(authenticateUser, createEmployee)
+  .get(authenticateUser, getAllEmployees);
+router
+  .route("/:id")
+  .delete(authenticateUser, deleteEmployee)
+  .patch(authenticateUser, updateEmployee);
 
 export default router;

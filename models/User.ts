@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import validator from "validator";
 
 interface User {
-  hotel: any;
+  hotel: ObjectId;
   name: string;
   email: string;
   password: string;
@@ -12,6 +12,7 @@ interface User {
   lastName: string;
   phone: string;
   salary: string;
+  admin: ObjectId;
 }
 
 const UserSchema = new Schema<User>(
@@ -19,6 +20,10 @@ const UserSchema = new Schema<User>(
     hotel: {
       type: mongoose.Types.ObjectId,
       ref: "Hotel",
+    },
+    admin: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
     },
     name: {
       type: String,
