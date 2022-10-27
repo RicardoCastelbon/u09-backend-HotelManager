@@ -5,7 +5,7 @@ import { attachCookiesToResponse } from "../utils/jwt";
 import { BadRequestError, UnAuthenticatedError } from "../errors";
 
 const createEmployee = async (req: any, res: any) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, lastName, salary } = req.body;
 
   if (!name || !email || !password) {
     throw new BadRequestError("Please provide all values");
@@ -24,7 +24,15 @@ const createEmployee = async (req: any, res: any) => {
     const user = await User.create(req.body);
     res
       .status(StatusCodes.CREATED)
-      .json({ user: { name: user.name, email: user.email, role: user.role } });
+      .json({
+        user: {
+          name: user.name,
+          lastName: user.lastName,
+          email: user.email,
+          salary:user.salary,
+          role: user.role,
+        },
+      });
   }
 };
 
