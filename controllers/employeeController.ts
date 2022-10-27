@@ -1,7 +1,5 @@
 import User from "../models/User";
 import { StatusCodes } from "http-status-codes";
-import createTokenUser from "../utils/createTokenUser";
-import { attachCookiesToResponse } from "../utils/jwt";
 import { BadRequestError, UnAuthenticatedError } from "../errors";
 
 const createEmployee = async (req: any, res: any) => {
@@ -22,22 +20,21 @@ const createEmployee = async (req: any, res: any) => {
 
     //user creation
     const user = await User.create(req.body);
-    res
-      .status(StatusCodes.CREATED)
-      .json({
-        user: {
-          name: user.name,
-          lastName: user.lastName,
-          email: user.email,
-          salary:user.salary,
-          role: user.role,
-        },
-      });
+    res.status(StatusCodes.CREATED).json({
+      user: {
+        name: user.name,
+        lastName: user.lastName,
+        email: user.email,
+        salary: user.salary,
+        role: user.role,
+      },
+    });
   }
 };
 
 const getAllEmployees = async (req: any, res: any) => {
-  res.send("Get all employees");
+  const employees = await User.find({ admin: req.user.userId });
+  res.status(StatusCodes.OK).json({ employees });
 };
 
 const updateEmployee = async (req: any, res: any) => {
