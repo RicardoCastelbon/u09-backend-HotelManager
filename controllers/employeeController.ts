@@ -1,6 +1,12 @@
 import User from "../models/User";
 import { StatusCodes } from "http-status-codes";
-import { BadRequestError, UnAuthenticatedError } from "../errors";
+import {
+  BadRequestError,
+  NotFoundError,
+  UnAuthenticatedError,
+} from "../errors";
+import checkPermissions from "../utils/checkPermissions";
+import { UnauthorizedError } from "../errors";
 
 const createEmployee = async (req: any, res: any) => {
   const { name, email, password, lastName, salary } = req.body;
@@ -42,7 +48,22 @@ const updateEmployee = async (req: any, res: any) => {
 };
 
 const deleteEmployee = async (req: any, res: any) => {
-  res.send("Delete employee");
+  const { id: employeeId } = req.params;
+
+  const employee = await User.findOne({ _id: employeeId });
+
+  if (!employee) {
+    throw new NotFoundError(`No employee with id ${employeeId}`);
+  }
+
+  checkPermissions(req.user, employee.admin);
+
+  if (employee.role === "admin") {
+    throw new UnauthorizedError("Not authorized to access this route");
+  }
+
+  await employee?.remove();
+  res.status(StatusCodes.OK).json({ msg: "Success! Booking removed" });
 };
 
 export { createEmployee, getAllEmployees, updateEmployee, deleteEmployee };

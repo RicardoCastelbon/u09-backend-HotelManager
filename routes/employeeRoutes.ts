@@ -12,11 +12,11 @@ import { authenticateUser } from "../middleware/authentication";
 
 router
   .route("/")
-  .post(authenticateUser, createEmployee)
-  .get(authenticateUser, getAllEmployees);
+  .post(createEmployee)
+  .get(getAllEmployees);
 router
   .route("/:id")
-  .delete(authenticateUser, deleteEmployee)
-  .patch(authenticateUser, updateEmployee);
+  .delete( deleteEmployee)
+  .patch(updateEmployee);
 
 export default router;
