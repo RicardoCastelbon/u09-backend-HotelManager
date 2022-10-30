@@ -20,8 +20,8 @@ const attachCookiesToResponse = ({ res, user }: any) => {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
     //if the project is in production can send cookies in https only
-    secure: process.env.NODE_ENV === "production",
-    //secure: true,
+    //secure: process.env.NODE_ENV === "production",
+    secure: true,
     signed: true,
     sameSite: 'none',
   });
