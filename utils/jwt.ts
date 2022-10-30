@@ -22,6 +22,8 @@ const attachCookiesToResponse = ({ res, user }: any) => {
     //if the project is in production can send cookies in https only
     //secure: process.env.NODE_ENV === "production",
     signed: true,
+    secure: true,
+    sameSite: false,
   });
 };
 
