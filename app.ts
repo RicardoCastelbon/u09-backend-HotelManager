@@ -21,7 +21,7 @@ import employeeRoutes from "./routes/employeeRoutes";
 //Middleware
 app.use(
   cors({
-    origin: "https://shiny-kashata-8c2deb.netlify.app/",
+    origin: "https://shiny-kashata-8c2deb.netlify.app/landing",
     credentials: true,
     exposedHeaders: ["Authorization"],
   })
