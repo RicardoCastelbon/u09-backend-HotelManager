@@ -19,13 +19,11 @@ const authenticateUser = async (req: any, res: any, next: any) => {
   }
 };
 
-const authorizePermissions = (...roles: any) => {
-  return (req: any, res: any, next: any) => {
-    if (!roles.includes(req.user.role)) {
+const authorizePermissions = (req: any, res: any, next: any) => {
+    if (req.user.role !== "admin") {
       throw new UnauthorizedError("Unauthorized to access this route");
     }
     next();
   };
-};
 
 export { authenticateUser, authorizePermissions };

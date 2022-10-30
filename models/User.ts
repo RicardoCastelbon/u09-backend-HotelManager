@@ -17,10 +17,6 @@ interface User {
 
 const UserSchema = new Schema<User>(
   {
-    hotel: {
-      type: mongoose.Types.ObjectId,
-      ref: "Hotel",
-    },
     admin: {
       type: mongoose.Types.ObjectId,
       ref: "User",

@@ -15,7 +15,6 @@ import connectDB from "./db/connect";
 
 //Routers
 import authRouter from "./routes/authRoutes";
-import hotelRoutes from "./routes/hotelRoutes";
 import bookingRoutes from "./routes/bookingRoutes";
 import employeeRoutes from "./routes/employeeRoutes";
 
@@ -31,7 +30,10 @@ app.use(morgan("tiny")); //Log request for easy debugging
 app.use(cookieParser(process.env.JWT_SECRET));
 import notFoundMiddleware from "./middleware/not-found";
 import errorHandlerMiddleware from "./middleware/error-handler";
-import { authenticateUser } from "./middleware/authentication";
+import {
+  authenticateUser,
+  authorizePermissions,
+} from "./middleware/authentication";
 
 app.use(express.json());
 
@@ -40,9 +42,13 @@ app.get("/", (req: any, res: any) => {
 });
 
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/hotel", authenticateUser, hotelRoutes);
 app.use("/api/v1/bookings", authenticateUser, bookingRoutes);
-app.use("/api/v1/employees", authenticateUser, employeeRoutes);
+app.use(
+  "/api/v1/employees",
+  authenticateUser,
+  authorizePermissions,
+  employeeRoutes
+);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
