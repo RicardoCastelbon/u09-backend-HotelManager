@@ -17,7 +17,7 @@ const attachCookiesToResponse = ({ res, user }: any) => {
   //send token via cookie
   const oneDay = 1000 * 60 * 60 * 24;
   res.cookie("token", token, {
-    httpOnly: false,
+    httpOnly: true,
     expires: new Date(Date.now() + oneDay),
     //if the project is in production can send cookies in https only
     //secure: process.env.NODE_ENV === "production",
