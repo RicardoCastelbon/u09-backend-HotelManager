@@ -21,7 +21,7 @@ import employeeRoutes from "./routes/employeeRoutes";
 //Middleware
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: "*",
     credentials: true,
     exposedHeaders: ["Authorization"],
   })
