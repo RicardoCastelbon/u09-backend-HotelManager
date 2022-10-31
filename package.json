@@ -5,7 +5,8 @@
   "main": "app.ts",
   "scripts": {
     "start": "nodemon app.ts",
-    "dev": "nodemon app.ts"
+    "dev": "nodemon app.ts",
+    "build": "tsc --outDir build"
   },
   "keywords": [],
   "author": "",
