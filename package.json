@@ -4,9 +4,9 @@
   "description": "",
   "main": "app.ts",
   "scripts": {
-    "start": "node build/app.js",
+    "start": "nodemon app.ts",
     "dev": "nodemon app.ts",
-    "build": "tsc --outDir build"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
