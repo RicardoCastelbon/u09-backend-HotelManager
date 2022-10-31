@@ -21,7 +21,7 @@ import employeeRoutes from "./routes/employeeRoutes";
 //Middleware
 app.use(
   cors({
-    origin: "https://shiny-kashata-8c2deb.netlify.app",
+    origin: "https://prismatic-strudel-de52ce.netlify.app",
     credentials: true,
     exposedHeaders: ["Authorization"],
   })
