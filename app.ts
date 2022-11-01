@@ -21,7 +21,7 @@ import employeeRoutes from "./routes/employeeRoutes";
 //Middleware
 app.use(
   cors({
-    origin: "https://prismatic-strudel-de52ce.netlify.app",
+    origin: "https://hotel-manager-app.netlify.app",
     credentials: true,
     exposedHeaders: ["Authorization"],
   })
