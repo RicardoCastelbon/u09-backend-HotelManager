@@ -21,7 +21,7 @@ import employeeRoutes from "./routes/employeeRoutes";
 //Middleware
 app.use(
   cors({
-    origin: "https://hotel-manager-app.netlify.app",
+    origin: `${process.env.REQUEST_URL}`,
     credentials: true,
     exposedHeaders: ["Authorization"],
   })
