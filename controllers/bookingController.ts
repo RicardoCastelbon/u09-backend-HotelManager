@@ -3,7 +3,7 @@ import { BadRequestError, NotFoundError } from "../errors";
 import Booking from "../models/Booking";
 import checkPermissions from "../utils/checkPermissions";
 
-const createBooking = async (req: any, res: any) => {
+const createBooking = async (req, res) => {
   const {
     roomType,
     checkin,
@@ -43,7 +43,7 @@ const createBooking = async (req: any, res: any) => {
   res.status(StatusCodes.CREATED).json({ booking });
 };
 
-const getAllBookings = async (req: any, res: any) => {
+const getAllBookings = async (req, res) => {
   const { search, status, sort } = req.query;
 
   interface QueryObject {
@@ -95,7 +95,7 @@ const getAllBookings = async (req: any, res: any) => {
     .json({ bookings, totalBookings: bookings.length, numOfPages: 1 });
 };
 
-const updateBooking = async (req: any, res: any) => {
+const updateBooking = async (req, res) => {
   const { id: bookingId } = req.params;
   const {
     roomType,
@@ -139,7 +139,7 @@ const updateBooking = async (req: any, res: any) => {
   res.status(StatusCodes.OK).json({ updatedBooking });
 };
 
-const deleteBooking = async (req: any, res: any) => {
+const deleteBooking = async (req, res) => {
   const { id: bookingId } = req.params;
 
   const booking = await Booking.findOne({ _id: bookingId });
