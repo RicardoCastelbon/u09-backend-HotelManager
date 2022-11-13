@@ -4,7 +4,7 @@ import createTokenUser from "../utils/createTokenUser";
 import { attachCookiesToResponse } from "../utils/jwt";
 import { BadRequestError, UnAuthenticatedError } from "../errors";
 
-const register = async (req: any, res: any) => {
+const register = async (req, res) => {
   const { name, email, password } = req.body;
 
   if (!name || !email || !password) {
@@ -34,7 +34,7 @@ const register = async (req: any, res: any) => {
   res.status(StatusCodes.CREATED).json({ user: tokenUser });
 };
 
-const login = async (req: any, res: any) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -61,7 +61,7 @@ const login = async (req: any, res: any) => {
   }
 };
 
-const logout = async (req: any, res: any) => {
+const logout = async (req, res) => {
   res.cookie("token", "logout", {
     httpOnly: true,
     expires: new Date(Date.now()),
@@ -69,7 +69,7 @@ const logout = async (req: any, res: any) => {
   res.status(StatusCodes.OK).json({ msg: "User logged out" });
 };
 
-const updateUser = async (req: any, res: any) => {
+const updateUser = async (req, res) => {
   const { email, name, lastName } = req.body;
   if (!name || !email || !lastName) {
     throw new BadRequestError("Please provide all values");
@@ -93,7 +93,7 @@ const updateUser = async (req: any, res: any) => {
   }
 };
 
-const updateUserPassword = async (req: any, res: any) => {
+const updateUserPassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
   if (!oldPassword || !newPassword) {
     throw new BadRequestError("Please provide both values");

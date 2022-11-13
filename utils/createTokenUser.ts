@@ -1,4 +1,4 @@
-const createTokenUser = (user: any) => {
+const createTokenUser = (user) => {
   return {
     name: user.name,
     lastName: user.lastName,

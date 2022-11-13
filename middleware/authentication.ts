@@ -1,7 +1,7 @@
 import { UnAuthenticatedError, UnauthorizedError } from "../errors";
 import { isTokenValid } from "../utils/jwt";
 
-const authenticateUser = async (req: any, res: any, next: any) => {
+const authenticateUser = async (req, res, next) => {
   const token = req.signedCookies.token;
   if (!token) {
     throw new UnAuthenticatedError("Authentication Invalid");
@@ -19,11 +19,11 @@ const authenticateUser = async (req: any, res: any, next: any) => {
   }
 };
 
-const authorizePermissions = (req: any, res: any, next: any) => {
-    if (req.user.role !== "admin") {
-      throw new UnauthorizedError("Unauthorized to access this route");
-    }
-    next();
-  };
+const authorizePermissions = (req, res, next) => {
+  if (req.user.role !== "admin") {
+    throw new UnauthorizedError("Unauthorized to access this route");
+  }
+  next();
+};
 
 export { authenticateUser, authorizePermissions };

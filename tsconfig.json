@@ -5,6 +5,6 @@
     "target": "es6",
     "rootDir": "./",
     "outDir": "./build",
-    "strict": true
+    "strict": false
   }
 }

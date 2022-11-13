@@ -37,7 +37,7 @@ import {
 
 app.use(express.json());
 
-app.get("/", (req: any, res: any) => {
+app.get("/", (req, res) => {
   res.send("HotelManager");
 });
 

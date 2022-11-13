@@ -1,17 +1,17 @@
 import jwt from "jsonwebtoken";
 
-const createJWT = ({ payload }: any) => {
+const createJWT = ({ payload }) => {
   const token = jwt.sign(payload, `${process.env.JWT_SECRET}`, {
     expiresIn: process.env.JWT_LIFETIME,
   });
   return token;
 };
 
-const isTokenValid = ({ token }: any) => {
+const isTokenValid = ({ token }) => {
   return jwt.verify(token, `${process.env.JWT_SECRET}`);
 };
 
-const attachCookiesToResponse = ({ res, user }: any) => {
+const attachCookiesToResponse = ({ res, user }) => {
   const token = createJWT({ payload: user });
 
   //send token via cookie
@@ -23,7 +23,7 @@ const attachCookiesToResponse = ({ res, user }: any) => {
     //secure: process.env.NODE_ENV === "production",
     secure: true,
     signed: true,
-    sameSite: 'none',
+    sameSite: "none",
   });
 };
 

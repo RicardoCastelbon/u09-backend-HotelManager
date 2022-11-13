@@ -1,6 +1,6 @@
 import { UnauthorizedError } from "../errors";
 
-const checkPermissions = (reqUser: any, resourceUserId: any) => {
+const checkPermissions = (reqUser, resourceUserId) => {
   //if(requestUser.role === 'admin') return
   if (
     reqUser.userId === resourceUserId.toString() ||
